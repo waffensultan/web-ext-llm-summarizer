@@ -6,7 +6,7 @@ export default function App() {
     const [originalText, setOriginalText] = useState("");
     const [summarizedText, setSummarizedText] = useState("");
 
-    useEffect(() => {
+    useEffect(function useSummaryWatcher() {
         if (chrome?.storage?.local) {
             // INITIAL RETRIEVAL OF TEXT
             chrome.storage.local.get("summary", (res) => {
