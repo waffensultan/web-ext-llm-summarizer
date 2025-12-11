@@ -1,0 +1,5 @@
+- [ ] build compression section
+- [ ] summarizeText() should accept these parameters: text, model, compression level, and api key
+- [ ] make repeat and summarize button functional (add rate limiting)
+- [ ] make copy text button functional
+- [ ] build configuration view that accepts these settings: model, and api key
