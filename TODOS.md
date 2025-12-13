@@ -1,4 +1,5 @@
-- [ ] build compression section
+- [x] build compression section
+- [x] added types for better developer DX and data consistency, helping provide further clarification for tutorial followers
 - [ ] summarizeText() should accept these parameters: text, model, compression level, and api key
 - [ ] make repeat and summarize button functional (add rate limiting)
 - [ ] make copy text button functional
