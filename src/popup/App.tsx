@@ -1,13 +1,36 @@
 import { useState, useEffect } from "react";
-import { CopyIcon, RepeatIcon, SettingsIcon } from "lucide-react";
+import {
+    CopyIcon,
+    EyeClosedIcon,
+    EyeIcon,
+    RepeatIcon,
+    SettingsIcon,
+} from "lucide-react";
 import { summarizeText } from "@/scripts/summarize-text";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 type TCompressionLevel = "Low" | "Medium" | "High";
 export default function App() {
     const [originalText, setOriginalText] = useState("");
     const [summarizedText, setSummarizedText] = useState("");
+    const [apiKey, setApiKey] = useState("");
+    const [showApiKey, setShowApiKey] = useState(false);
     const [settings, setSettings] = useState<{
-        aiModel: "OpenAI";
+        aiModel: string;
         compressionLevel: TCompressionLevel;
     }>({
         aiModel: "OpenAI",
@@ -61,9 +84,96 @@ export default function App() {
                         </div>
                     </li>
                     <li>
-                        <button>
-                            <SettingsIcon />
-                        </button>
+                        <Dialog>
+                            <DialogTrigger>
+                                <SettingsIcon className="cursor-pointer" />
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogTitle className="text-2xl">
+                                    Extension Configuration
+                                </DialogTitle>
+                                <hr className="text-[#D9D9D9] my-1" />
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-semibold text-lg tracking-tight">
+                                            AI Model
+                                        </span>
+                                        <Select
+                                            defaultValue={settings?.aiModel}
+                                            onValueChange={(value) =>
+                                                setSettings((prev) => ({
+                                                    ...prev,
+                                                    aiModel: value,
+                                                }))
+                                            }
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue
+                                                    placeholder={
+                                                        settings?.aiModel
+                                                    }
+                                                />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="OpenAI">
+                                                        OpenAI
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                        <span>
+                                            Select which AI model to utilize for
+                                            summarization.
+                                        </span>
+                                    </div>
+
+                                    {/*API KEY INPUT*/}
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-semibold text-lg tracking-tight">
+                                            API Key
+                                        </span>
+                                        <div className="flex flex-row items-center gap-3">
+                                            <Input
+                                                type={
+                                                    !showApiKey
+                                                        ? "text"
+                                                        : "password"
+                                                }
+                                                placeholder="Enter your API key here..."
+                                            />
+                                            {!showApiKey ? (
+                                                <EyeIcon
+                                                    className="cursor-pointer "
+                                                    onClick={() =>
+                                                        setShowApiKey(true)
+                                                    }
+                                                />
+                                            ) : (
+                                                <EyeClosedIcon
+                                                    className="cursor-pointer text-gray-500"
+                                                    onClick={() =>
+                                                        setShowApiKey(false)
+                                                    }
+                                                />
+                                            )}
+                                        </div>
+                                        <span>
+                                            Your API key is stored locally and
+                                            never sent to our servers.
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-end items-center gap-2">
+                                        <button className="cursor-pointer flex justify-center items-center gap-1 border duration-150 border-red-600 hover:bg-red-600 hover:text-white rounded-md text-red-500 font-semibold py-2 px-4">
+                                            Discard
+                                        </button>
+                                        <button className="cursor-pointer flex justify-center items-center gap-1 bg-blue-500 rounded-md text-white font-semibold py-2 px-4">
+                                            Save Settings
+                                        </button>
+                                    </div>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
                     </li>
                 </ul>
             </nav>
