@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 
-type TCompressionLevel = "Low" | "Medium" | "High";
+export type TCompressionLevel = "Low" | "Medium" | "High";
 export default function App() {
     const [originalText, setOriginalText] = useState("");
     const [summarizedText, setSummarizedText] = useState("");
@@ -33,8 +33,15 @@ export default function App() {
         aiModel: string;
         compressionLevel: TCompressionLevel;
     }>({
-        aiModel: "OpenAI",
+        aiModel: "claude-3-opus",
         compressionLevel: "Low",
+    });
+    const [draftSettings, setDraftSettings] = useState<{
+        aiModel: string;
+        compressionLevel: TCompressionLevel;
+    }>({
+        aiModel: settings?.aiModel,
+        compressionLevel: settings.compressionLevel,
     });
 
     function useSummaryWatcher() {
@@ -65,6 +72,10 @@ export default function App() {
         }
     };
 
+    const discardDraftSettings = () => {
+        setDraftSettings(settings);
+    };
+
     return (
         <main className="w-[600px] h-full bg-[#FDFDFD] text-black font-poppins py-5 px-3 flex-col">
             <nav>
@@ -85,7 +96,9 @@ export default function App() {
                     </li>
                     <li>
                         <Dialog>
-                            <DialogTrigger>
+                            <DialogTrigger
+                                onClick={() => discardDraftSettings()}
+                            >
                                 <SettingsIcon className="cursor-pointer" />
                             </DialogTrigger>
                             <DialogContent>
@@ -116,8 +129,8 @@ export default function App() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
-                                                    <SelectItem value="OpenAI">
-                                                        OpenAI
+                                                    <SelectItem value="claude-3-opus">
+                                                        claude-3-opus
                                                     </SelectItem>
                                                 </SelectGroup>
                                             </SelectContent>
@@ -127,7 +140,6 @@ export default function App() {
                                             summarization.
                                         </span>
                                     </div>
-
                                     {/*API KEY INPUT*/}
                                     <div className="flex flex-col gap-1">
                                         <span className="font-semibold text-lg tracking-tight">
@@ -162,6 +174,34 @@ export default function App() {
                                             Your API key is stored locally and
                                             never sent to our servers.
                                         </span>
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-semibold text-lg tracking-tight">
+                                            Compression Level
+                                        </span>
+                                        <div className="flex items-center gap-1">
+                                            {(
+                                                [
+                                                    "Low",
+                                                    "Medium",
+                                                    "High",
+                                                ] as TCompressionLevel[]
+                                            ).map((compressionLevel) => (
+                                                <button
+                                                    onClick={() =>
+                                                        setDraftSettings(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                compressionLevel,
+                                                            }),
+                                                        )
+                                                    }
+                                                    className={`duration-150 cursor-pointer font-semibold border border-gray-200 rounded-md py-1 w-14 flex items-center justify-center ${draftSettings?.compressionLevel === compressionLevel && "bg-gray-300 text-neutral-500"}`}
+                                                >
+                                                    {compressionLevel}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
                                     <div className="flex justify-end items-center gap-2">
                                         <button className="cursor-pointer flex justify-center items-center gap-1 border duration-150 border-red-600 hover:bg-red-600 hover:text-white rounded-md text-red-500 font-semibold py-2 px-4">
@@ -245,7 +285,13 @@ export default function App() {
                         >
                             <span>Summarize</span>
                         </button>
-                        <button className="border border-[#D9D9D9] rounded-md py-1 px-2">
+                        <button
+                            onClick={() => {
+                                navigator.clipboard.writeText(summarizedText);
+                                window.alert("Successfully copied text!");
+                            }}
+                            className="border border-[#D9D9D9] rounded-md py-1 px-2 cursor-pointer"
+                        >
                             <CopyIcon size={20} />
                         </button>
                         <button

@@ -1,6 +1,8 @@
 - [x] build compression section
 - [x] added types for better developer DX and data consistency, helping provide further clarification for tutorial followers
-- [ ] summarizeText() should accept these parameters: text, model, compression level, and api key
+- [x] create configuration ui
+- [x] build configuration view that accepts these settings: model, and api key
+- [x] make copy text button functional
+- [x] summarizeText() should accept these parameters: text, model, compression level, and api key
+- [ ] summarizeText() should accept an input text and output a summarized output text from selected ai model
 - [ ] make repeat and summarize button functional (add rate limiting)
-- [ ] make copy text button functional
-- [ ] build configuration view that accepts these settings: model, and api key
