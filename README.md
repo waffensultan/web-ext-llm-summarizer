@@ -1,12 +1,10 @@
 
-# web-ext-llm-summarizer
+# [web-ext-llm-summarizer](https://github.com/waffensultan/web-ext-llm-summarizer)
 
 A lightweight Chrome extension that summarizes selected text using AI models of your choice.
 Users can right-click any selected text, choose **“Summarize with AI”**, and instantly receive a concise summary inside the extension popup.
 
 This repository serves as the **code companion** to a full tutorial article that walks through the architecture, APIs, and implementation details step by step.
-
----
 
 ## Features
 
