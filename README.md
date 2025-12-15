@@ -1,52 +1,134 @@
-# React + Vite + CRXJS
 
-This template helps you quickly start developing Chrome extensions with React, TypeScript and Vite. It includes the CRXJS Vite plugin for seamless Chrome extension development.
+# web-ext-llm-summarizer
+
+A lightweight Chrome extension that summarizes selected text using AI models of your choice.
+Users can right-click any selected text, choose **“Summarize with AI”**, and instantly receive a concise summary inside the extension popup.
+
+This repository serves as the **code companion** to a full tutorial article that walks through the architecture, APIs, and implementation details step by step.
+
+---
 
 ## Features
 
-- React with TypeScript
-- TypeScript support
-- Vite build tool
-- CRXJS Vite plugin integration
-- Chrome extension manifest configuration
+* Context menu integration (`Summarize with AI` on text selection)
+* Supports multiple AI models
+* User-provided API keys (stored locally)
+* Adjustable compression levels (Low / Medium / High)
+* Clean, responsive popup UI built with React
+* No backend required — runs fully client-side
 
-## Quick Start
+---
 
-1. Install dependencies:
+## How It Works (High-Level)
 
-```bash
-npm install
+1. The user selects text on any webpage
+2. A custom Chrome context menu item appears
+3. Clicking **“Summarize with AI”** sends the selected text to the summarization logic
+4. The generated summary is stored in `chrome.storage.local`
+5. The popup UI listens for updates and displays the summary instantly
+
+This architecture keeps the extension fast, simple, and privacy-friendly.
+
+---
+
+## Tech Stack
+
+* **Chrome Extensions API (Manifest V3)**
+* **CRXJS**
+* **Vite**
+* **React + TypeScript**
+* **Tailwind CSS**
+* **shadcn/ui**
+* **Lucide Icons**
+* **AI APIs (model-agnostic design)**
+
+---
+
+## Project Structure (Simplified)
+
+```
+src/
+├─ scripts/
+│  └─ summarize-text.ts     # Core AI summarization logic
+├─ components/
+│  └─ ui/                   # Reusable UI components
+├─ App.tsx                  # Popup UI
+├─ background.ts            # Context menu + event listeners
+└─ manifest.json
 ```
 
-2. Start development server:
+## Installation (Development)
 
-```bash
-npm run dev
-```
+1. Clone the repository:
 
-3. Open Chrome and navigate to `chrome://extensions/`, enable "Developer mode", and load the unpacked extension from the `dist` directory.
+   ```bash
+   git clone https://github.com/waffensultan/web-ext-llm-summarizer.git
+   ```
 
-4. Build for production:
+2. Install dependencies:
 
-```bash
-npm run build
-```
+   ```bash
+   npm install
+   ```
 
-## Project Structure
+3. Build the extension:
 
-- `src/popup/` - Extension popup UI
-- `src/content/` - Content scripts
-- `manifest.config.ts` - Chrome extension manifest configuration
+   ```bash
+   npm run build
+   ```
 
-## Documentation
+4. Load it into Chrome:
 
-- [React Documentation](https://reactjs.org/)
-- [Vite Documentation](https://vitejs.dev/)
-- [CRXJS Documentation](https://crxjs.dev/vite-plugin)
+   * Open `chrome://extensions`
+   * Enable **Developer mode**
+   * Click **Load unpacked**
+   * Select the `dist` folder
 
-## Chrome Extension Development Notes
+---
 
-- Use `manifest.config.ts` to configure your extension
-- The CRXJS plugin automatically handles manifest generation
-- Content scripts should be placed in `src/content/`
-- Popup UI should be placed in `src/popup/`
+## Usage
+
+1. Highlight text on any webpage
+2. Right-click and select **Summarize with AI**
+3. Click the extension icon to view the summary
+4. Adjust AI model, API key, and compression level in settings
+
+---
+
+## API Keys & Privacy
+
+* API keys are **stored locally** using `chrome.storage`
+* Keys are **never sent to any external server**
+* All requests go directly from the extension to the selected AI provider
+
+---
+
+## Tutorial Article
+
+This repository is intentionally focused on code.
+For a complete walkthrough — including design decisions, Chrome extension APIs, and AI integration — read the full tutorial:
+
+**[Tutorial link coming soon]**
+
+---
+
+## Future Improvements
+
+* Additional AI providers
+* Token and cost estimation
+* Streaming responses
+* Summary history
+* Export and share options
+
+---
+
+## License
+
+MIT License
+
+---
+
+## Credits
+
+Built by **Waffen Sultan**
+In collaboration with **TutorialsDojo**

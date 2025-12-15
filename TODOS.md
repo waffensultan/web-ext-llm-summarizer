@@ -4,5 +4,6 @@
 - [x] build configuration view that accepts these settings: model, and api key
 - [x] make copy text button functional
 - [x] summarizeText() should accept these parameters: text, model, compression level, and api key
+- [x] add draft settings discard feature for configuration ui
 - [ ] summarizeText() should accept an input text and output a summarized output text from selected ai model
 - [ ] make repeat and summarize button functional (add rate limiting)

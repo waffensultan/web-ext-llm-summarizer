@@ -29,6 +29,7 @@ export default function App() {
     const [summarizedText, setSummarizedText] = useState("");
     const [apiKey, setApiKey] = useState("");
     const [showApiKey, setShowApiKey] = useState(false);
+    const [settingsIsOpen, setSettingsIsOpen] = useState(false);
     const [settings, setSettings] = useState<{
         aiModel: string;
         compressionLevel: TCompressionLevel;
@@ -74,10 +75,11 @@ export default function App() {
 
     const discardDraftSettings = () => {
         setDraftSettings(settings);
+        setSettingsIsOpen(false);
     };
 
     return (
-        <main className="w-[600px] h-full bg-[#FDFDFD] text-black font-poppins py-5 px-3 flex-col">
+        <main className="w-[600px] h-full bg-[#FDFDFD] text-black font-poppins py-3 px-3 flex-col">
             <nav>
                 <ul className="flex items-center justify-between">
                     <li className="flex gap-2 items-center">
@@ -95,7 +97,10 @@ export default function App() {
                         </div>
                     </li>
                     <li>
-                        <Dialog>
+                        <Dialog
+                            open={settingsIsOpen}
+                            onOpenChange={setSettingsIsOpen}
+                        >
                             <DialogTrigger
                                 onClick={() => discardDraftSettings()}
                             >
@@ -204,7 +209,12 @@ export default function App() {
                                         </div>
                                     </div>
                                     <div className="flex justify-end items-center gap-2">
-                                        <button className="cursor-pointer flex justify-center items-center gap-1 border duration-150 border-red-600 hover:bg-red-600 hover:text-white rounded-md text-red-500 font-semibold py-2 px-4">
+                                        <button
+                                            onClick={() =>
+                                                discardDraftSettings()
+                                            }
+                                            className="cursor-pointer flex justify-center items-center gap-1 border duration-150 border-red-600 hover:bg-red-600 hover:text-white rounded-md text-red-500 font-semibold py-2 px-4"
+                                        >
                                             Discard
                                         </button>
                                         <button className="cursor-pointer flex justify-center items-center gap-1 bg-blue-500 rounded-md text-white font-semibold py-2 px-4">
@@ -237,9 +247,7 @@ export default function App() {
                 <div className="flex flex-col w-[60%] gap-1">
                     <div className="w-full flex justify-between">
                         <h4 className="font-semibold">Summary</h4>
-                        <span className="text-[#A49E9E]">
-                            % reduction (TODO)
-                        </span>
+                        <span className="text-[#A49E9E]">0% reduction</span>
                     </div>
                     <div className="flex flex-col p-2 bg-white border border-[#D9D9D9] rounded-md h-[300px]">
                         <textarea
@@ -281,7 +289,7 @@ export default function App() {
                     <div className="flex gap-1">
                         <button
                             onClick={() => handleSummarizeText()}
-                            className="cursor-pointer flex justify-center items-center gap-1 w-full bg-blue-500 rounded-md text-white font-semibold py-2"
+                            className="cursor-pointer flex justify-center items-center gap-1 w-full bg-blue-500 duration-150 rounded-md text-white font-semibold py-2"
                         >
                             <span>Summarize</span>
                         </button>
