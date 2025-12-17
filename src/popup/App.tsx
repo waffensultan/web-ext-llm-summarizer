@@ -116,10 +116,13 @@ export default function App() {
         };
 
         retrieveSummary();
+
+        // @ts-ignore
         chrome.storage.local.onChanged.addListener(handleStorageChange);
 
         return () => {
             isMounted = false;
+            // @ts-ignore
             chrome.storage.local.onChanged.removeListener(handleStorageChange);
         };
     }, []);
@@ -203,8 +206,8 @@ export default function App() {
                 <ul className="flex items-center justify-between">
                     <li className="flex gap-2 items-center">
                         <img
-                            src="/tutorials-dojo-logo.png"
-                            className="w-10 h-10"
+                            src="/web-ext-llm-summarizer-logo.png"
+                            className="w-14 h-14"
                         />
                         <div className="flex flex-col">
                             <h1 className="font-semibold text-2xl">

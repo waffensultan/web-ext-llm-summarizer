@@ -1,7 +1,13 @@
 import { TCompressionLevel } from "@/popup/App";
 import { summarizeText } from "@/scripts/summarize-text";
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason === "install") {
+        setTimeout(() => {
+            chrome.tabs.create({ url: "https://tutorialsdojo.com/" });
+        }, 1000);
+    }
+
     chrome.contextMenus.create({
         id: "summarize-text",
         title: "Summarize with AI",
