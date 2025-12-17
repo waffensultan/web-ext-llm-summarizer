@@ -104,7 +104,7 @@ src/
 This repository is intentionally focused on code.
 For a complete walkthrough — including design decisions, Chrome extension APIs, and AI integration — read the full tutorial:
 
-**[Tutorial link coming soon]**
+[TutorialsDojo Tutorial Article](https://tutorialsdojo.com/build-a-model-agnostic-ai-text-summarizer-web-extension/)
 
 ## Future Improvements
 
