@@ -15,6 +15,16 @@ This repository serves as the **code companion** to a full tutorial article that
 * Clean, responsive popup UI built with React
 * No backend required — runs fully client-side
 
+
+
+## Download the Extension
+
+You can download the ready-to-install version of the extension from the official release page:
+
+**[Download v1.0.0](https://github.com/waffensultan/web-ext-llm-summarizer/releases/tag/1.0.0)**
+
+After downloading the `.zip` file, extract it and load the `dist` folder in Chrome via **Developer mode → Load unpacked**.
+
 ## How It Works (High-Level)
 
 1. The user selects text on any webpage
