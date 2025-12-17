@@ -33,6 +33,7 @@ export default function App() {
     });
     const [showApiKey, setShowApiKey] = useState(false);
     const [settingsIsOpen, setSettingsIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<{
         aiModel: string;
         compressionLevel: TCompressionLevel;
@@ -134,32 +135,38 @@ export default function App() {
     };
 
     const handleSummarizeText = async () => {
-        const res = await summarizeText(
-            originalText || summarizedText.originalSummarizedText,
-            settings.aiModel,
-            settings.compressionLevel,
-            settings.apiKey,
-        );
+        setLoading(true);
 
-        if (chrome?.storage?.local) {
-            const summarized = {
-                originalSummarizedText:
-                    originalText || summarizedText.originalSummarizedText,
-                summary: res,
-                compressionLevel: settings.compressionLevel,
-            };
+        try {
+            const res = await summarizeText(
+                originalText || summarizedText.originalSummarizedText,
+                settings.aiModel,
+                settings.compressionLevel,
+                settings.apiKey,
+            );
 
-            // Save it in storage
-            chrome.storage.local.set({
-                ...summarized,
-            });
+            if (chrome?.storage?.local) {
+                const summarized = {
+                    originalSummarizedText:
+                        originalText || summarizedText.originalSummarizedText,
+                    summary: res,
+                    compressionLevel: settings.compressionLevel,
+                };
 
-            // Directly update the UI
-            setSummarizedText({
-                originalSummarizedText: originalText ?? "",
-                content: summarized.summary,
-                compressionLevel: summarized.compressionLevel,
-            });
+                // Save it in storage
+                chrome.storage.local.set({
+                    ...summarized,
+                });
+
+                // Directly update the UI
+                setSummarizedText({
+                    originalSummarizedText: originalText ?? "",
+                    content: summarized.summary,
+                    compressionLevel: summarized.compressionLevel,
+                });
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -386,9 +393,23 @@ export default function App() {
                             % reduction
                         </span>
                     </div>
-                    <div className="flex flex-col p-2 bg-white border border-[#D9D9D9] rounded-md h-[300px]">
+                    <div className="flex flex-col p-2 bg-white border border-[#D9D9D9] rounded-md h-[300px] relative">
+                        {loading ? (
+                            <div className="absolute inset-0 z-10 flex flex-col gap-2 p-2">
+                                {/* Skeleton lines */}
+                                {Array.from({ length: 8 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="h-4 bg-gray-300 rounded-md animate-pulse"
+                                        style={{
+                                            width: `${Math.random() * 60 + 40}%`,
+                                        }} // random widths for realism
+                                    ></div>
+                                ))}
+                            </div>
+                        ) : null}
                         <textarea
-                            className="resize-none h-full"
+                            className={`resize-none h-full bg-white ${loading ? "text-transparent" : ""}`}
                             disabled
                             value={summarizedText.content}
                         />
@@ -429,9 +450,10 @@ export default function App() {
                     <div className="flex gap-1">
                         <button
                             onClick={() => handleSummarizeText()}
+                            disabled={loading}
                             className="cursor-pointer flex justify-center items-center gap-1 w-full bg-blue-500 duration-150 rounded-md text-white font-semibold py-2"
                         >
-                            <span>Summarize</span>
+                            {loading ? "Summarizing..." : "Summarize"}
                         </button>
                         <button
                             onClick={() => {
